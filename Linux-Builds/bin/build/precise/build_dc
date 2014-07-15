@@ -1,0 +1,4 @@
+#cd build
+
+/usr/local/bin/cmake ../HPCC-Platform -DMAKE_DOCS_ONLY=ON -DUSE_NATIVE_LIBRARIES=ON
+

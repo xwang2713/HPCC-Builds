@@ -1,0 +1,6 @@
+#!/bin/bash
+
+[ -z "$1" ] && echo "Miss tag or branch name" && exit 1
+
+curDir=$(dirname $0)
+${curDir}/github_ce $1 OFF
