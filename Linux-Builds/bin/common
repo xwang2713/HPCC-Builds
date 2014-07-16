@@ -8,6 +8,19 @@
 #
 check_distro ()
 {
+
+   cat /etc/*release | grep -i -q "CentOS release 5."
+   if [ $? -eq 0 ]
+   then
+      DISTRO=centos
+      PKG_TYPE=rpm
+      DISTRO_DISPLAY_NAME=CentOS
+      CODENAME=el5
+      ARCH=$(uname -m)
+      return
+
+   fi
+
    declare -A _distros
    _distros=( 
         [ubuntu]=deb,amd64,lsb-release,,Ubuntu 
