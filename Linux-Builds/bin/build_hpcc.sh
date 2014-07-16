@@ -88,7 +88,7 @@ echo "$DISTRO $CODENAME $PKG_TYPE $ARCH"
 export PKG_TYPE
 export CODENAME
 
-if [ ! -e  ${rootDir}/bin/config/os/${CODENAME}.conf  ]
+if [ ! -e  ${rootDir}/bin/config/os/${CODENAME}-${ARCH}.conf  ]
 then
    echo ""
    echo "Build HPCC on $DISTRO $CODENAME is not supported"
@@ -107,10 +107,17 @@ cd $releaseDir
 [ ! -d output ] && mkdir output
 export outputDir=${workDir}/$release/output
 
-[ "$projects" == "all" ] && projects=$(grep "projects_all=" ${rootDir}/bin/config/os/${CODENAME}.conf | cut -d'=' -f2)
+[ "$projects" == "all" ] && projects=$(grep "projects_all=" ${rootDir}/bin/config/os/${CODENAME}-${ARCH}.conf | cut -d'=' -f2)
 echo $projects | tr [','] ['\n '] | while read project 
 do
   
+   echo ",${projects}," | grep -e ",${project}," > /dev/null 2>&1
+   if [ $? -ne 0 ]
+   then
+       echo "Build ${display_name} on ${CODENAME} is not supported."
+       continue
+   fi
+
    . ${rootDir}/bin/config/${project_config_file[$project]}
    
    echo 
