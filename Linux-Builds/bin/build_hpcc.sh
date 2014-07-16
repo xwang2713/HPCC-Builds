@@ -119,11 +119,11 @@ do
        echo "Build ${display_name} on ${CODENAME} is not supported."
        continue
    fi
-   echo -ne "Build ${display_name} ... \r"
+   echo "Build ${display_name} ..."
 
    [ ! -d $project_directory ] && mkdir $project_directory
    cd $project_directory
-   echo "Get git repository $branch"
+   echo -n "Get git repository $branch ... "
    ${rootDir}/bin/github/${github_script} $branch > git.log 2>&1
    if [ $? -ne 0 ]  
    then
@@ -135,7 +135,7 @@ do
    [ -d build ] && rm -rf build
    mkdir build
    cd build
-   echo -ne "build ... \r"
+   echo -n "build ... "
    export package_directory
    export package_name_prefix
    ${rootDir}/bin/build/${build_script}  > build.log 2>&1
