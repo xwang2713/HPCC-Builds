@@ -8,8 +8,8 @@ cmakeOptions=${scriptName}_cmake_options
 . ${curDir}/build_common
 . ${curDir}/build_common_${PKG_TYPE}
 
-echo "cmake -G \"Unix Makefiles\" -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 -DMAKE_DOCS_ONLY=ON -DUSE_NATIVE_LIBRARIES=ON ${CMAKE_OPTIONS} ../HPCC-Platform" 
-cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 -DMAKE_DOCS_ONLY=ON -DUSE_NATIVE_LIBRARIES=ON ${CMAKE_OPTIONS} ../HPCC-Platform || exit 1
+echo "cmake -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 -DMAKE_DOCS_ONLY=ON -DUSE_NATIVE_LIBRARIES=ON ${CMAKE_OPTIONS} ../HPCC-Platform" 
+cmake -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 -DMAKE_DOCS_ONLY=ON -DUSE_NATIVE_LIBRARIES=ON ${CMAKE_OPTIONS} ../HPCC-Platform || exit 1
 
 make -j4 || exit 1
 
