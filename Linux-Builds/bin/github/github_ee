@@ -6,7 +6,8 @@ curDir=$(dirname $0)
 [ -z "$1" ] && echo "Miss tag or branch name" && exit 1
 TAG_BRANCH_NAME=enterprise_$1
 
-./build_ce $TAG_BRANCH_NAME
+${curDir}/github_ce $1
+[ $? -ne 0 ] && exit 1
 
 LN_DIR=LN
 

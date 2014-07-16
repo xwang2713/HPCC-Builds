@@ -7,17 +7,17 @@ usage() {
      Options:
         -b|--branch:  HPCC component branch or tag.
         -p|--project: HPCC componet ids seperated by comma. 
-           1:  Platform community
+           1:  Platform community (rpm only)
            2:  Platform community with plugin
-           3:  Platform enterprise
+           3:  Platform enterprise (rpm only)
            4:  Platform enterprise with plugin
-           5:  Platform internal
+           5:  Platform internal (rpm only)
            6:  Platform internal with plugin
            7:  Clienttools
-           8:  Graphcontrols
+           8:  Graphcontrol (deb only)
            9:  Ganglia-monitoring
           10:  Nagios-monitoring
-          11:  Docs
+          11:  Docs (Ubuntu 12.04 precise only)
         -r|--release: HPCC release version. Example, 5.0.0-1
         -h|--help:  Help message
       
@@ -51,9 +51,9 @@ project_config_file=(
       'internal.conf' 
       'internal_with_plugins.conf' 
       'clienttools.conf' 
-      'graphcontrols.conf' 
+      'graphcontrol.conf' 
       'gangliamonitoring.conf' 
-      'bagiosmonitoring.conf' 
+      'nagiosmonitoring.conf' 
       'docs.conf' 
 )
 
@@ -85,8 +85,10 @@ done
 . ${rootDir}/bin/common
 check_distro
 echo "$DISTRO $CODENAME $PKG_TYPE $ARCH"
+export PKG_TYPE
+export CODENAME
 
-if [ ! -e  ${rootDir}/bin/config/${CODENAME}.conf  ]
+if [ ! -e  ${rootDir}/bin/config/os/${CODENAME}.conf  ]
 then
    echo ""
    echo "Build HPCC on $DISTRO $CODENAME is not supported"
@@ -96,72 +98,54 @@ fi
 
 [ ! -d $rootDir/workspace ] && mkdir $rootDir/workspace 
 cd $rootDir/workspace
-workDir=$(pwd)
+export workDir=$(pwd)
 
 [ ! -d ${workDir}/$release ] && mkdir -p  ${workDir}/$release
-releaseDir=${workDir}/$release
+export releaseDir=${workDir}/$release
 cd $releaseDir
 
-[ "$projects" == "all" ] && projects=$(grep "projects_all=" ${rootDir}/bin/config/${CODENAME}.conf | cut -d'=' -f2)
+[ ! -d output ] && mkdir output
+export outputDir=${workDir}/$release/output
+
+[ "$projects" == "all" ] && projects=$(grep "projects_all=" ${rootDir}/bin/config/os/${CODENAME}.conf | cut -d'=' -f2)
 echo $projects | tr [','] ['\n '] | while read project 
 do
   
-   echo 
-   echo "Build ${project_config_file[$project]} ..."
-
    . ${rootDir}/bin/config/${project_config_file[$project]}
+   
+   echo 
+   if [ ! -e ${rootDir}/bin/build/${CODENAME}/${build_script}_cmake_options ]
+   then
+       echo "Build ${display_name} on ${CODENAME} is not supported."
+       continue
+   fi
+   echo -ne "Build ${display_name} ... \r"
+
    [ ! -d $project_directory ] && mkdir $project_directory
    cd $project_directory
    echo "Get git repository $branch"
    ${rootDir}/bin/github/${github_script} $branch > git.log 2>&1
    if [ $? -ne 0 ]  
    then
-      "Failed to get repository $project"
+      echo "FAILED"
       continue
    fi
-   
+   echo "OK"
+  
    [ -d build ] && rm -rf build
    mkdir build
    cd build
-   echo "cmake"
-   ${rootDir}/bin/build/${CODENAME}/${build_script}  > cmake.log 2>&1
+   echo -ne "build ... \r"
+   export package_directory
+   export package_name_prefix
+   ${rootDir}/bin/build/${build_script}  > build.log 2>&1
    if [ $? -ne 0 ]  
    then
-      "Failed to run cmake $project"
+      echo "FAILED"
       continue
    fi
+   echo "OK"
 
-   if [ "$project" != "docs" ]
-   then
-      echo "make package"
-      make -j4 package > build.log 2>&1
-      if [ $? -ne 0 ]  
-      then
-         "Failed to make $project"
-         continue
-      fi
-    
-      echo "copy package"
-      [ ! -d ${releaseDir}/${package_directory} ] && mkdir -p ${releaseDir}/${package_directory}
-      cp ${package_name_prefix}*${PKG_TYPE} ${releaseDir}/${package_directory}/
-   else
-      echo "make"
-      make -j4 > build.log 2>&1
-      if [ $? -ne 0 ]  
-      then
-         "Failed to make $project"
-         continue
-      fi
-      echo "make install"
-      make install > install.log 2>&1
-      if [ $? -ne 0 ]  
-      then
-         "Failed to make install $project"
-         continue
-      fi
-      cp ${package_name_prefix}*pdf ${releaseDir}/${package_directory}/
-     
-   fi
    cd $releaseDir
 
 done

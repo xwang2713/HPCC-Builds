@@ -4,16 +4,16 @@ curDir=$(dirname $0)
 . ${curDir}/github_common
 
 [ -z "$1" ] && echo "Miss tag or branch name" && exit 1
-TAG_BRANCH_NAME=enterprise_$1
+TAG_BRANCH_NAME=nagios-monitoring_$1
 
-./build_ce $TAG_BRANCH_NAME  OFF
+${curDir}/github_ce $TAG_BRANCH_NAME  OFF
 
 NM_DIR=nagios-monitoring
 
 echo ""
 echo "get HPCC Nagios Monitoring repo"
 [ -d $NM_DIR ] && rm -rf $NM_DIR
-NM_REPO=https://github.com/hpcc-systems/NM.git
+NM_REPO=https://github.com/hpcc-systems/nagios-monitoring.git
 
 git clone $NM_REPO 
 

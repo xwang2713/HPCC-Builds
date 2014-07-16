@@ -1,1 +1,0 @@
-cmake -DCMAKE_BUILD_TYPE=Release -DWITH_SYSTEM_BOOST=1 -DFB_PROJECTS_DIR:PATH=../GraphControl -DGRAPHVIZSRC_DIR=/usr/local/src/graphviz-2.26.3 -DAGGSRC_DIR=../agg ../FireBreath

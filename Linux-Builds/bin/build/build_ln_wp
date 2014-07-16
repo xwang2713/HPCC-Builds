@@ -1,5 +1,20 @@
 #!/bin/bash
 
-#cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release  -DBUILD_LEVEL=INTERNAL -DCHECK_GIT_TAG=0 -DCMAKE_CXX_FLAGS="-D_DALIUSER_STACKTRACE" -DUSE_LIBXSLT=ON -DXALAN_LIBRARIES= ../LN
+curDir=$(dirname $0)
+scriptName=$(basename $0)
+cmakeOptions=${scriptName}_cmake_options
+[ ! -e ${curDir}/${CODENAME}/${cmakeOptions} ] && exit 1
+. ${curDir}/${CODENAME}/${cmakeOptions} 
+. ${curDir}/build_common
+. ${curDir}/build_common_${PKG_TYPE}
 
-cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release  -DBUILD_LEVEL=INTERNAL -DCHECK_GIT_TAG=0  ../LN
+echo "cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LEVEL=INTERNAL -DCHECK_GIT_TAG=1 -DCMAKE_CXX_FLAGS=-D_DALIUSER_STACKTRACE ${CMAKE_OPTIONS} ../HPCC-Platform" 
+cmake  -DCMAKE_BUILD_TYPE=Release -DBUILD_LEVEL=INTERNAL -DCHECK_GIT_TAG=1 -DCMAKE_CXX_FLAGS="-D_DALIUSER_STACKTRACE" ${CMAKE_OPTIONS} ../HPCC-Platform || exit 1
+
+build_package || exit 1
+
+[ "$PKG_TYPE" = "deb" ] && fix_deb HPCC-Platform
+
+copy_package
+
+

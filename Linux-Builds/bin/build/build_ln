@@ -1,3 +1,20 @@
 #!/bin/bash
 
-cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release  -DBUILD_LEVEL=INTERNAL -DCHECK_GIT_TAG=0  -DUSE_LIBARCHIVE=false -DUSE_PYTHON=OFF -DUSE_V8=OFF -DUSE_JNI=OFF -DUSE_RINSIDE=OFF ../LN
+curDir=$(dirname $0)
+scriptName=$(basename $0)
+cmakeOptions=${scriptName}_cmake_options
+[ ! -e ${curDir}/${CODENAME}/${cmakeOptions} ] && exit 1
+. ${curDir}/${CODENAME}/${cmakeOptions} 
+. ${curDir}/build_common
+. ${curDir}/build_common_${PKG_TYPE}
+
+echo "cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_LEVEL=INTERNAL -DCHECK_GIT_TAG=1 -DCMAKE_CXX_FLAGS=-D_DALIUSER_STACKTRACE  -DUSE_PYTHON=OFF -DUSE_V8=OFF -DUSE_JNI=OFF -DUSE_RINSIDE=OFF -DUSE_MYSQL=OFF -DUSE_SQLITE3=OFF ${CMAKE_OPTIONS} ../HPCC-Platform" 
+cmake  -DCMAKE_BUILD_TYPE=Release -DBUILD_LEVEL=INTERNAL -DCHECK_GIT_TAG=1 -DCMAKE_CXX_FLAGS="-D_DALIUSER_STACKTRACE"  -DUSE_PYTHON=OFF -DUSE_V8=OFF -DUSE_JNI=OFF -DUSE_RINSIDE=OFF -DUSE_MYSQL=OFF -DUSE_SQLITE3=OFF ${CMAKE_OPTIONS} ../HPCC-Platform || exit 1
+
+build_package || exit 1
+
+[ "$PKG_TYPE" = "deb" ] && fix_deb HPCC-Platform
+
+copy_package
+
+
