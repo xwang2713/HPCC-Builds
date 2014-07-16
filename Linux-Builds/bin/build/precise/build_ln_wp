@@ -1,0 +1,16 @@
+#!/bin/bash
+
+curDir=$(dirname $0)
+#cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release  -DBUILD_LEVEL=INTERNAL -DCHECK_GIT_TAG=0 -DCMAKE_CXX_FLAGS="-D_DALIUSER_STACKTRACE" -DUSE_LIBXSLT=ON -DXALAN_LIBRARIES= ../LN
+
+cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release  -DBUILD_LEVEL=INTERNAL -DCHECK_GIT_TAG=0  ../LN || exit 1
+
+make -j4 package || exit 1
+
+. ${curDir}/../build_common_deb
+
+fix_deb HPCC-Platform
+
+[ ! -d ${outputDir}/${package_directory} ] && mkdir -p ${outputDir}/${package_directory}
+cp ${package_name_prefix}*${PKG_TYPE} ${outputDir}/${package_directory}/ || exit 1
+

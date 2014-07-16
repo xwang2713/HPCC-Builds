@@ -1,0 +1,20 @@
+#!/bin/bash
+
+curDir=$(dirname $0)
+scriptName=$(basename $0)
+cmakeOptions=${scriptName}_cmake_options
+[ ! -e ${curDir}/${CODENAME}/${cmakeOptions} ] && exit 1
+. ${curDir}/${CODENAME}/${cmakeOptions} 
+. ${curDir}/build_common
+. ${curDir}/build_common_${PKG_TYPE}
+
+echo "cmake -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 ${CMAKE_OPTIONS} ../nagios-monitoring" 
+cmake -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 ${CMAKE_OPTIONS} ../nagios-monitoring || exit 1
+
+build_package || exit 1
+
+[ "$PKG_TYPE" = "deb" ] && fix_deb HPCC-Platform
+
+copy_package
+
+

@@ -1,0 +1,7 @@
+fix_deb() {
+    LDEB=$(ls -t *.deb 2>/dev/null | head -1)
+    if [ ! -z "${LDEB}" ]; then
+        echo "Processing ${LDEB}"
+        ../$1/build_utils/cleanDeb.sh ${LDEB}
+    fi
+}
