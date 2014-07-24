@@ -8,7 +8,7 @@ curDir=$(dirname $0)
 match_branch_suffix $1
 if [ $? -eq 0 ]
 then
-   TAG_BRANCH_NAME=enterprise_$1
+   TAG_BRANCH_NAME=internal_$1
 else
    TAG_BRANCH_NAME=$1
 fi
