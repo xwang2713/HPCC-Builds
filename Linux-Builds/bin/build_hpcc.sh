@@ -107,10 +107,11 @@ cd $releaseDir
 [ ! -d output ] && mkdir output
 export outputDir=${workDir}/$release/output
 
-[ "$projects" == "all" ] && projects=$(grep "projects_all=" ${rootDir}/bin/config/os/${CODENAME}-${ARCH}.conf | cut -d'=' -f2)
+supported_projects=$(grep "projects_all=" ${rootDir}/bin/config/os/${CODENAME}-${ARCH}.conf | cut -d'=' -f2)
+[ "$projects" == "all" ] && projects=${supported_projects}
 echo $projects | tr [','] ['\n '] | while read project 
 do
-  
+   cd $releaseDir
    echo ",${projects}," | grep -e ",${project}," > /dev/null 2>&1
    if [ $? -ne 0 ]
    then
@@ -153,7 +154,6 @@ do
    fi
    echo "OK"
 
-   cd $releaseDir
 
 done
 

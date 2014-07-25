@@ -93,7 +93,7 @@ Version: $OS_VERSION, architecture: $ARCH
 #-----------------------------------------------------------					   
 if ( ! (Test-Path ${root_directory}/workspace/${release}/output) ) 
 {
-    mkdir -p ${root_directory}/workspace/${release}/output | Out-Null
+    mkdir ${root_directory}/workspace/${release}/output | Out-Null
 }
 cd ${root_directory}/workspace
 $global:work_directory = $pwd.Path
@@ -101,12 +101,42 @@ $global:work_directory = $pwd.Path
 cd ${work_directory}/${release}
 $global:release_directory = $pwd.Path
 $global:output_directory = "${release_directory}/output"
-${project_config_file}[1]
+
+$projects = $projects -replace ',', ' '
+$supported_projects = Get-Content ${bin_directory}/config/os/win.conf | %{$_.split('=')[1]}
+#-----------------------------------------------------------
+# Iterate each selected project and build
+#-----------------------------------------------------------	
 foreach ($project_id in $projects)
 {
-    #echo  ${bin_directory}/${project_config_file}[1]
-	"$project_config_file[$project_id]"
-	#Import-Module  ${bin_directory}/${project_config_file[$project]}
+    cd $release_directory
+	
+    if ( ! (" $supported_projects ").contains(" $project_id " ) )
+	{
+	    "Unknown project id $project_id"
+		continue
+	}
+	#del variable:\global:github_script
+	$config_file = $project_config_file[$project_id]
+	#Remove-Module  ${bin_directory}/config/$config_file
+	Import-Module  ${bin_directory}/config/$config_file -force
+	""
+	"Build $display_name ..."
+	if ( ! (Test-Path $project_directory ) )
+    {
+       mkdir $project_directory | Out-Null
+    }
+    
+	Write-Host -NoNewline "Get git repository $branch ... "
+	
+	${bin_direcotry}/github/${github_script} -branch $branch > git.log 2>&1
+    if ( $? -ne 0 ) 
+    {
+       echo "FAILED"
+       continue
+    }
+    echo "OK"
+	
 }
 
 cd ${bin_directory}

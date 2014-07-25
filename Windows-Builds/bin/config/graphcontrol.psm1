@@ -1,6 +1,0 @@
-display_name="HPCCSystem Graphcontrol Community"
-project_directory=graphcontrol
-github_script=github_gc
-build_script=build_gc
-package_name_prefix=hpccsystems-graphcontrol_community
-package_directory=bin/graphcontrol
