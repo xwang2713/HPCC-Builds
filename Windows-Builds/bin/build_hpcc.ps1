@@ -16,7 +16,10 @@ Current supported HPCC Components on Windows:
 	  5. KEL
 	  6. SALT
 Usage:  ./build_hpcc.sh -branch <branch or tag>  -project <project id separated by common> or all>
-               -release <relation name (optional)>
+            -external <external directory, default: c:\hpcc\external> 
+			-external2 <external2 directory, default: c:\hpcc\external2> 
+			-sign <sign directory, default: c:\hpcc\sign> 
+			-docs <ECL IDE docs root directory, default: c:\hpcc\docs> -release <relation name (optional)>
 .EXAMPLE
 ./build_hpcc.sh -branch 5.0.0-1 -project 1,2,3,4 -release 5.0.0
 
@@ -41,6 +44,10 @@ param(
 	      Throw "Missing branch/tag suffix or full name. For example 5.0.0-1"),
        $projects="all",
 	   $release="",
+	   $external="C:/hpcc/externals",
+	   $external2="C:/hpcc/externals2",
+	   $sign="C:/hpcc/sign",
+	   $docs="C:/hpcc/docs",
 	   [bool]$reset
 	  )
 
@@ -54,6 +61,13 @@ if ( $release -eq "" )
 {
     $release = $branch
 }
+
+$global:EXTERNAL_DIRECTORY  =  $external
+$global:EXTERNAL2_DIRECTORY =  $external2
+$global:SIGN_DIRECTORY      =  $sign
+$global:DOCS_DIRECTORY      =  $docs
+
+echo " external: $EXTERNAL_DIRECTORY   sign: $SIGN_DIRECTORY"
 	  
 @" 
 
@@ -64,6 +78,8 @@ if ( $release -eq "" )
            Release          : $release
 		   
 "@
+
+
 #-----------------------------------------------------------
 # Project configuration files
 #-----------------------------------------------------------
@@ -127,16 +143,31 @@ foreach ($project_id in $projects)
        mkdir $project_directory | Out-Null
     }
     
-	Write-Host -NoNewline "Get git repository $branch ... "
+	cd $project_directory
 	
-	${bin_direcotry}/github/${github_script} -branch $branch > git.log 2>&1
-    if ( $? -ne 0 ) 
+	Write-Host -NoNewline "Get git repository $branch ... "
+	& ${bin_directory}\github\${github_script} $branch > git.log 2>&1
+    if ( !($?) ) 
     {
        echo "FAILED"
        continue
     }
     echo "OK"
 	
+	if ( (Test-Path build ) )
+    {
+       rm -r -Force build
+    }
+	mkdir build | Out-Null
+	cd build
+	Write-Host -NoNewline "Build ... "
+	& ${bin_directory}/build/${build_script} > build.log 2>&1
+    if ( ! ($?) ) 
+    {
+       echo "FAILED"
+       continue
+    }
+    echo "OK"
 }
 
 cd ${bin_directory}
