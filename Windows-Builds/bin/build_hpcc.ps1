@@ -1,6 +1,3 @@
-#-----------------------------------------------------------
-# build_hpcc.ps1
-#-----------------------------------------------------------
 <#
 
 .SYNOPSIS
@@ -16,10 +13,11 @@ Current supported HPCC Components on Windows:
 	  5. KEL
 	  6. SALT
 Usage:  ./build_hpcc.sh -branch <branch or tag>  -project <project id separated by common> or all>
-            -external <external directory, default: c:\hpcc\external> 
-			-external2 <external2 directory, default: c:\hpcc\external2> 
+            -external <externals directory, default: c:\hpcc\externals> 
+			-external2 <externals2 directory, default: c:\hpcc\externals2> 
 			-sign <sign directory, default: c:\hpcc\sign> 
 			-docs <ECL IDE docs root directory, default: c:\hpcc\docs> -release <relation name (optional)>
+			
 .EXAMPLE
 ./build_hpcc.sh -branch 5.0.0-1 -project 1,2,3,4 -release 5.0.0
 
@@ -36,16 +34,14 @@ under output directory.
 https://github.com/xwang2713/HPCC-Builds.git
 
 #>
-#-----------------------------------------------------------
-# Input parameters
-#-----------------------------------------------------------
+
 param(
        $branch=$(
 	      Throw "Missing branch/tag suffix or full name. For example 5.0.0-1"),
        $projects="all",
 	   $release="",
-	   $external="C:/hpcc/externals",
-	   $external2="C:/hpcc/externals2",
+	   $externals="C:/hpcc/externals",
+	   $externals2="C:/hpcc/externals2",
 	   $sign="C:/hpcc/sign",
 	   $docs="C:/hpcc/docs",
 	   [bool]$reset
@@ -62,8 +58,8 @@ if ( $release -eq "" )
     $release = $branch
 }
 
-$global:EXTERNAL_DIRECTORY  =  $external
-$global:EXTERNAL2_DIRECTORY =  $external2
+$global:EXTERNALS_DIRECTORY  =  $externals
+$global:EXTERNALS2_DIRECTORY =  $externals2
 $global:SIGN_DIRECTORY      =  $sign
 $global:DOCS_DIRECTORY      =  $docs
 
@@ -135,7 +131,7 @@ foreach ($project_id in $projects)
 	#del variable:\global:github_script
 	$config_file = $project_config_file[$project_id]
 	#Remove-Module  ${bin_directory}/config/$config_file
-	Import-Module  ${bin_directory}/config/$config_file -force
+	Import-Module  ${bin_directory}/config/$config_file -Force
 	""
 	"Build $display_name ..."
 	if ( ! (Test-Path $project_directory ) )
@@ -154,12 +150,12 @@ foreach ($project_id in $projects)
     }
     echo "OK"
 	
-	if ( (Test-Path build ) )
+	if ( (Test-Path $build_directory ) )
     {
-       rm -r -Force build
+       rm -r -Force $build_directory
     }
-	mkdir build | Out-Null
-	cd build
+	mkdir $build_directory | Out-Null
+	cd $build_directory
 	Write-Host -NoNewline "Build ... "
 	& ${bin_directory}/build/${build_script} > build.log 2>&1
     if ( ! ($?) ) 
