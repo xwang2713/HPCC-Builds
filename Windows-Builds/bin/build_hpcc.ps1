@@ -11,12 +11,17 @@ Current supported HPCC Components on Windows:
 	  3. GraphControl 64bit
 	  4. ECLIDE
 	  5. KEL
-	  6. SALT
+	  6. SALT Lite
+	  7. SALT
 Usage:  ./build_hpcc.sh -branch <branch or tag>  -project <project id separated by common> or all>
             -external <externals directory, default: c:\hpcc\externals> 
 			-external2 <externals2 directory, default: c:\hpcc\externals2> 
 			-sign <sign directory, default: c:\hpcc\sign> 
 			-docs <ECL IDE docs root directory, default: c:\hpcc\docs> -release <relation name (optional)>
+			
+			Under docs the directory struction is ECLIDE/docs/<release>/.
+			If projects is set to 'all' it will build 1,2,3,4 since KEL and SALT branches are 
+			different from HPCC core components.
 			
 .EXAMPLE
 ./build_hpcc.sh -branch 5.0.0-1 -project 1,2,3,4 -release 5.0.0
@@ -57,13 +62,16 @@ if ( $release -eq "" )
 {
     $release = $branch
 }
+if ( $projects -eq 'all' )
+{
+   $projects = '1 2 3 4'
+}
 
 $global:EXTERNALS_DIRECTORY  =  $externals
 $global:EXTERNALS2_DIRECTORY =  $externals2
-$global:SIGN_DIRECTORY      =  $sign
-$global:DOCS_DIRECTORY      =  $docs
+$global:SIGN_DIRECTORY       =  $sign
+$global:DOCS_DIRECTORY       =  $docs
 
-echo " external: $EXTERNAL_DIRECTORY   sign: $SIGN_DIRECTORY"
 	  
 @" 
 
@@ -85,6 +93,7 @@ $project_config_file = "Project configuration",
 					   "graphcontrol_64bit.psm1",
 					   "eclide.psm1",
 					   "kel.psm1",
+					   "salt_lite.psm1",
 					   "salt.psm1"
 
 #-----------------------------------------------------------
@@ -150,12 +159,15 @@ foreach ($project_id in $projects)
     }
     echo "OK"
 	
-	if ( (Test-Path $build_directory ) )
-    {
-       rm -r -Force $build_directory
-    }
-	mkdir $build_directory | Out-Null
-	cd $build_directory
+	if ( ! ([string]::IsNullOrEmpty($build_directory)) )
+	{
+	    if ( (Test-Path $build_directory ) )
+        {
+           rm -r -Force $build_directory
+        }
+	    mkdir $build_directory | Out-Null
+	    cd $build_directory
+	}
 	Write-Host -NoNewline "Build ... "
 	& ${bin_directory}/build/${build_script} > build.log 2>&1
     if ( ! ($?) ) 
