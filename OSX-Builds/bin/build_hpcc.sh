@@ -5,21 +5,12 @@ usage() {
    cat << EOF
      Usage $(basename $0) options
      Options:
-        -b|--branch:  HPCC component branch or tag.
-        -p|--project: HPCC componet ids seperated by comma. 
-           1:  Platform community (rpm only)
-           2:  Platform community with plugin
-           3:  Platform enterprise (rpm only)
-           4:  Platform enterprise with plugin
-           5:  Platform internal (rpm only)
-           6:  Platform internal with plugin
-           7:  Clienttools
-           8:  Graphcontrol (deb only)
-           9:  Ganglia-monitoring
-          10:  Nagios-monitoring
-          11:  Docs (Ubuntu 12.04 precise only)
-        -r|--release: HPCC release version. Example, 5.0.0-1
-        -h|--help:  Help message
+        -b:  HPCC component branch or tag.
+        -p: HPCC componet ids seperated by comma. 
+           1:  Clienttools
+           2:  Graphcontrol 
+        -r: HPCC release version. Example, 5.0.0-1
+        -h:  Help message
       
 EOF
    exit 1
@@ -44,34 +35,25 @@ reset=0
 
 project_config_file=(
       'Project configuration'
-      'community.conf' 
-      'community_with_plugins.conf' 
-      'enterprise.conf' 
-      'enterprise_with_plugins.conf' 
-      'internal.conf' 
-      'internal_with_plugins.conf' 
       'clienttools.conf' 
       'graphcontrol.conf' 
-      'gangliamonitoring.conf' 
-      'nagiosmonitoring.conf' 
-      'docs.conf' 
 )
 
 
-TEMP=$(/usr/bin/getopt -o b:hp:Rr: --long branch:,help,project:,release:,reset -n 'build_hpcc' -- "$@")
+TEMP=$(/usr/bin/getopt  b:hp:Rr: $*)
 if [ $? != 0 ] ; then echo "Failure to parse commandline." >&2 ; end 1 ; fi
 eval set -- "$TEMP"
 while true ; do
     case "$1" in
-       -b|--branch) branch="$2"
+       -b) branch="$2"
             shift 2;;
-       -h|--help) usage
+       -h) usage
             shift ;;
-       -p|--project) projects="$2"
+       -p) projects="$2"
             shift 2;;
-       -R|--reset) reset=1
+       -R) reset=1
             shift ;;
-       -r|--release) release="$2"
+       -r) release="$2"
             shift 2;;
        --) shift ; break ;;
        *) usage ;;
@@ -87,6 +69,7 @@ check_distro
 echo "$DISTRO $CODENAME $PKG_TYPE $ARCH"
 export PKG_TYPE
 export CODENAME
+
 
 if [ ! -e  ${rootDir}/bin/config/os/${CODENAME}-${ARCH}.conf  ]
 then
@@ -124,7 +107,7 @@ do
    echo 
    if [ ! -e ${rootDir}/bin/build/${CODENAME}/${build_script}_cmake_options ]
    then
-       echo "Build ${display_name} on ${CODENAME} is not supported."
+       echo "Build script for ${display_name} on ${CODENAME} is not supported."
        continue
    fi
    echo "Build ${display_name} ..."
@@ -139,7 +122,7 @@ do
       continue
    fi
    echo "OK"
-  
+
    [ -d build ] && rm -rf build
    mkdir build
    cd build

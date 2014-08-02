@@ -1,0 +1,26 @@
+#
+# Check distro name and package type
+# Set DESTRO      (ubuntu/centos/fedora, etc)
+# Set PKG_TYPE    (DEB/RPM/TGZ)
+# Set CODENAME   (for ubuntu: precise,saucy,trusty,etc)
+# Set ARCH        (amd64,x86_64,i386) 
+#
+check_distro ()
+{
+   DISTRO=osx
+   PKG_TYPE=dmg
+   ARCH=$(uname -m)
+   CODENAME=$(uname -s)
+}
+
+
+get_distro_version() 
+{
+   sw_vers -productVersion
+}
+
+#check_distro
+#echo $DISTRO
+#echo $PKG_TYPE
+#echo $ARCH
+#echo $CODENAME

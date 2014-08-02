@@ -1,0 +1,16 @@
+#!/bin/bash
+
+curDir=$(dirname $0)
+scriptName=$(basename $0)
+cmakeOptions=${scriptName}_cmake_options
+[ ! -e ${curDir}/${CODENAME}/${cmakeOptions} ] && exit 1
+. ${curDir}/${CODENAME}/${cmakeOptions} 
+. ${curDir}/build_common
+. ${curDir}/build_common_${PKG_TYPE}
+
+echo "cmake ../HPCC-Platform -DCHECK_GIT_TAG=0 -DCLIENTTOOLS_ONLY=ON -DUSE_PYTHON=OFF -DUSE_V8=OFF -DUSE_JNI=OFF -DUSE_RINSIDE=OFF -DUSE_MYSQL=OFF -DUSE_SQLITE3=OFF ${CMAKE_OPTIONS}"
+cmake ../HPCC-Platform -DCHECK_GIT_TAG=0 -DCLIENTTOOLS_ONLY=ON -DUSE_PYTHON=OFF -DUSE_V8=OFF -DUSE_JNI=OFF -DUSE_RINSIDE=OFF -DUSE_MYSQL=OFF -DUSE_SQLITE3=OFF ${CMAKE_OPTIONS} || exit 1
+
+build_package || exit 1
+
+copy_package

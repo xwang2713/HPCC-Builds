@@ -1,0 +1,71 @@
+#!/bin/bash
+
+curDir=$(dirname $0)
+. ${curDir}/github_common
+
+[ -z "$1" ] && echo "Miss tag or branch name" && exit 1
+match_branch_suffix $1
+if [ $? -eq 0 ]
+then
+   TAG_BRANCH_NAME=graphcontrol_$1
+else
+   TAG_BRANCH_NAME=$1
+fi
+
+
+
+
+################################################
+#
+# Get GraphControl 
+#
+################################################
+echo ""
+echo "get HPCC GraphControl repo"
+[ -d GraphControl ] && rm -rf GraphControl
+GC_REPO=https://github.com/hpcc-systems/GraphControl.git
+
+git clone $GC_REPO 
+
+
+cd GraphControl
+
+get_branch_tag $TAG_BRANCH_NAME
+
+cd ..
+
+################################################
+#
+# Get FireBreath 
+#
+################################################
+echo ""
+echo "get FireBreath repo"
+[ -d FireBreath ] && rm -rf FireBreath
+FB_REPO=https://github.com/GordonSmith/FireBreath.git
+
+git clone $FB_REPO 
+
+cd FireBreath
+
+get_branch_tag graphcontrol-3.10.x
+
+cd ..
+
+################################################
+#
+# Get AGG
+#
+################################################
+echo ""
+echo "get AGG repo"
+[ -d agg ] && rm -rf agg
+AGG_REPO=https://github.com/GordonSmith/agg.git
+
+git clone $AGG_REPO
+
+cd agg
+
+get_branch_tag HPCC-8372
+
+cd ..

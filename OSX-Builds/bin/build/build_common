@@ -1,0 +1,18 @@
+build_package() {
+   echo "make -j4 package"
+   make -j4 package
+}
+
+
+copy_package() {
+    [ ! -d ${outputDir}/${package_directory} ] && mkdir -p ${outputDir}/${package_directory}
+    echo "${package_name_prefix}*${PKG_TYPE} ${outputDir}/${package_directory}/"
+    cp ${package_name_prefix}*${PKG_TYPE} ${outputDir}/${package_directory}/ || exit 1
+}
+
+copy_docs() {
+    echo "cp -r ${package_name_prefix} ${outputDir}"
+    cp -r ${package_name_prefix} ${outputDir}
+}
+
+
