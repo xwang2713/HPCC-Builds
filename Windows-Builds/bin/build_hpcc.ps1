@@ -45,10 +45,10 @@ param(
 	      Throw "Missing branch/tag suffix or full name. For example 5.0.0-1"),
        $projects="all",
 	   $release="",
-	   $externals="C:/hpcc/externals",
-	   $externals2="C:/hpcc/externals2",
-	   $sign="C:/hpcc/sign",
-	   $docs="C:/hpcc/docs",
+	   $externals="Z:/build/windows/externals",
+	   $externals2="Z:/build/windows/externals2",
+	   $sign="Z:/build/windows/sign",
+	   $docs="Z:/build/windows/ECLIDE/docs",
 	   [bool]$reset
 	  )
 
@@ -89,8 +89,8 @@ $global:DOCS_DIRECTORY       =  $docs
 #-----------------------------------------------------------
 $project_config_file = "Project configuration",
                        "clienttools.psm1",
-                       "graphcontrol_32bit.psm1",
-					   "graphcontrol_64bit.psm1",
+                       "graphcontrol_32bits.psm1",
+					   "graphcontrol_64bits.psm1",
 					   "eclide.psm1",
 					   "kel.psm1",
 					   "salt_lite.psm1",
@@ -109,6 +109,7 @@ $DISTRO
 Version: $OS_VERSION, architecture: $ARCH
    
 "@
+
 #-----------------------------------------------------------
 # Prepare working directories
 #-----------------------------------------------------------					   
@@ -125,13 +126,13 @@ $global:output_directory = "${release_directory}/output"
 
 $projects = $projects -replace ',', ' '
 $supported_projects = Get-Content ${bin_directory}/config/os/win.conf | %{$_.split('=')[1]}
+
 #-----------------------------------------------------------
 # Iterate each selected project and build
 #-----------------------------------------------------------	
 foreach ($project_id in $projects)
 {
     cd $release_directory
-	
     if ( ! (" $supported_projects ").contains(" $project_id " ) )
 	{
 	    "Unknown project id $project_id"
@@ -139,6 +140,7 @@ foreach ($project_id in $projects)
 	}
 	#del variable:\global:github_script
 	$config_file = $project_config_file[$project_id]
+	
 	#Remove-Module  ${bin_directory}/config/$config_file
 	Import-Module  ${bin_directory}/config/$config_file -Force
 	""
@@ -154,11 +156,12 @@ foreach ($project_id in $projects)
 	& ${bin_directory}\github\${github_script} $branch > git.log 2>&1
     if ( !($?) ) 
     {
-       echo "FAILED"
+       "FAILED"
        continue
     }
-    echo "OK"
-	
+    "OK"
+
+	cd ${release_directory}/${project_directory}
 	if ( ! ([string]::IsNullOrEmpty($build_directory)) )
 	{
 	    if ( (Test-Path $build_directory ) )
@@ -168,14 +171,15 @@ foreach ($project_id in $projects)
 	    mkdir $build_directory | Out-Null
 	    cd $build_directory
 	}
+	
 	Write-Host -NoNewline "Build ... "
 	& ${bin_directory}/build/${build_script} > build.log 2>&1
-    if ( ! ($?) ) 
+    if ( !($?) ) 
     {
-       echo "FAILED"
+       "FAILED"
        continue
     }
-    echo "OK"
+    "OK"
 }
 
 cd ${bin_directory}
