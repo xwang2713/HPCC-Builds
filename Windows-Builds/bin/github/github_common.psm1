@@ -13,9 +13,9 @@ Function get_branch_tag
 	  }
    }
    
-   $revision = git rev-list $commit | select -First 1
+   $revision = iex "git rev-list $commit | select -First 1"
    "Checkout $revision ($commit)"
-   git checkout $revision
+   iex "git checkout $revision"
 }
 
 Function match_branch_suffix()
