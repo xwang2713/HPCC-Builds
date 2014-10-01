@@ -28,8 +28,8 @@ $cmd = "cmake -G 'Visual Studio 10' -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_SYS
 			  + "-DFREETYPE_LIBRARY:FILEPATH=${EXTERNALS2_DIRECTORY}/ft248/freetype-2.4.8/objs/win32/vc2010/freetype248MT.lib " `
 		      + "-DAGGSRC_DIR:PATH=../../agg -DFB_PROJECTS_DIR:PATH=../GraphControl ../../FireBreath" 
 
-iex "$cmd; `$err=`$?"
-if ( !($err) ) { exit 1 }
+iex "$cmd 2>1; `$err=`$?"
+#if ( !($err) ) { exit 1 }
 
 "Build HPCC"
 build_hpcc

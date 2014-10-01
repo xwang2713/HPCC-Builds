@@ -1,13 +1,13 @@
 Function build_hpcc
 {
-   iex "cmake --build . --config $cmake_build_type; `$err=`$?"
-   if ( ! ($err) ) { PSCmdlet.Write-error ("Fails to compile") }
+   iex "cmake --build . --config $cmake_build_type 2>1; `$err=`$?"
+   #if ( ! ($err) ) { PSCmdlet.Write-error ("Fails to compile") }
    
-   iex "cmake --build . --config $cmake_build_type  --target package"
-    if ( ! ($err) ) { PSCmdlet.Write-error ("Fails to package") }
+   iex "cmake --build . --config $cmake_build_type  --target package 2>1; `$err=`$?"
+   # if ( ! ($err) ) { PSCmdlet.Write-error ("Fails to package") }
 	
-   iex "cmake --build . --config $cmake_build_type  --target sign"
-    if ( ! ($err) ) { PSCmdlet.Write-error ("Fails to sign") }
+   iex "cmake --build . --config $cmake_build_type  --target sign 2>1; `$err=`$?"
+   #if ( ! ($err) ) { PSCmdlet.Write-error ("Fails to sign") }
    
 }
 

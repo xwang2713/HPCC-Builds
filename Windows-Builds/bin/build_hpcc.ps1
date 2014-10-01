@@ -168,7 +168,7 @@ foreach ($project_id in $projects)
         {
            rm -r -Force $build_directory
         }
-	    mkdir -p $build_directory | Out-Null
+	    mkdir $build_directory | Out-Null
 	    cd $build_directory
 	}
 	

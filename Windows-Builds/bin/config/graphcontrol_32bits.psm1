@@ -5,7 +5,7 @@ $global:build_directory        = "build/GraphControl"
 $global:build_script        = "build_gc32.ps1"
 $global:package_name_prefix = "hpccsystems-graphcontrol_community"
 $global:package_directory   = "bin/graphcontrol"
-$global:cmake_build_type = "RelWithDefInfo"
+$global:cmake_build_type = "RelWithDebInfo"
 
 Export-ModuleMember -Variable display_name,project_directory,github_script,
        build_directory,build_script,package_name_prefix,package_directory
