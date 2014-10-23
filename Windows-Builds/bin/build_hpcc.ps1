@@ -14,11 +14,12 @@ Current supported HPCC Components on Windows:
 	  6. SALT Lite
 	  7. SALT
 Usage:  ./build_hpcc.sh -branch <branch or tag>  -project <project id separated by common> or all>
-            -external <externals directory, default: c:\hpcc\externals> 
-			-external2 <externals2 directory, default: c:\hpcc\externals2> 
-			-sign <sign directory, default: c:\hpcc\sign> 
-			-docs <ECL IDE docs root directory, default: c:\hpcc\docs> -release <relation name (optional)>
-			
+            -external <externals directory, default: Z:/build/windows/externals> 
+			-external2 <externals2 directory, default: Z:/build/windows/externals2> 
+			-sign <sign directory, default: Z:/build/windows/sign> 
+			-docs <ECL IDE docs root directory, default: Z:/build/windows/ECLIDE/docs> -release <relation name (optional)>
+			-ct_version client tools version for building ECLIDE
+			-gc_version graphic control version for building ECLIDE
 			Under docs the directory struction is ECLIDE/docs/<release>/.
 			If projects is set to 'all' it will build 1,2,3,4 since KEL and SALT branches are 
 			different from HPCC core components.
@@ -49,6 +50,8 @@ param(
 	   $externals2="Z:/build/windows/externals2",
 	   $sign="Z:/build/windows/sign",
 	   $docs="Z:/build/windows/ECLIDE/docs",
+	   $ct_build="",
+	   $gc_build="",
 	   [bool]$reset
 	  )
 
@@ -65,6 +68,14 @@ if ( $release -eq "" )
 if ( $projects -eq 'all' )
 {
    $projects = '1 2 3 4'
+}
+if ( $ct_build -eq "" )
+{
+    $ct_build = $release
+}
+if ( $gc_build -eq "" )
+{
+    $gc_build = $release
 }
 
 $global:EXTERNALS_DIRECTORY  =  $externals
@@ -123,6 +134,8 @@ $global:work_directory = $pwd.Path
 cd ${work_directory}/${release}
 $global:release_directory = $pwd.Path
 $global:output_directory = "${release_directory}/output"
+$global:ct_directory = "${work_directory}/${ct_build}/clienttools"
+$global:gc_directory = "${work_directory}/${gc_build}/graphcontrol_32bits"
 
 $projects = $projects -replace ',', ' '
 $supported_projects = Get-Content ${bin_directory}/config/os/win.conf | %{$_.split('=')[1]}

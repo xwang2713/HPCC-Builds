@@ -14,10 +14,10 @@ $cmd = "cmake -G 'Visual Studio 9 2008' -DCMAKE_BUILD_TYPE=$cmake_build_type -DU
        + "-DSIGN_DIRECTORY=${SIGN_DIRECTORY} -DEXTERNALS_DIRECTORY=${EXTERNALS_DIRECTORY} -DUSE_APR=OFF " `
 	   + "-DUSE_MYSQL=OFF -DUSE_SQLITE3=OFF ../HPCC-Platform"
 	   
-iex "$cmd 2>1 ; `$err=`$?"
+iex "$cmd 2>&1 ; `$err=`$?"
 #if ( !($err) ) { 
-#   echo "cmake error: $err"
-#   exit 1 
+#    echo "cmake error: $err"
+#    exit 1 
 #}
 
 "Build HPCC"
