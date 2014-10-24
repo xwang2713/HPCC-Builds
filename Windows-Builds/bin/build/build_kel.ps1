@@ -4,11 +4,10 @@ cd ../${project_directory}
 $cmd = "ant dist -Dhpcc-version=${release} -Dsign_directory=${SIGN_DIRECTORY}"    
 "$cmd"	   
 ant dist -Dhpcc-version="`"${release}`"" -Dsign_directory="${SIGN_DIRECTORY}"
-#iex "$cmd 2>&1 ; `$err=`$?"
-#if ( !($err) ) { 
-#    echo "cmake error: $err"
-#    exit 1 
-#}
+if ( !($?) ) { 
+    echo "cmake error: $err"
+    exit 1 
+}
 
 "Copy package"
 cd output
