@@ -23,6 +23,7 @@ Function copy_package
    if ( ! (Test-Path ${output_directory}/${package_directory}/${package_name_prefix}*${PKG_TYPE} ) )
    {
        throw "Fails to copy ${package_name_prefix}*${PKG_TYPE}"
+	   
    }
 }
 
