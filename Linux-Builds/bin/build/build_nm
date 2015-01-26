@@ -8,8 +8,8 @@ cmakeOptions=${scriptName}_cmake_options
 . ${curDir}/build_common
 . ${curDir}/build_common_${PKG_TYPE}
 
-echo "cmake -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 ${CMAKE_OPTIONS} ../nagios-monitoring" 
-cmake -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 ${CMAKE_OPTIONS} ../nagios-monitoring || exit 1
+echo "cmake -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 -DUSE_LIBXSLT=ON ${CMAKE_OPTIONS} ../nagios-monitoring" 
+cmake -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 -DUSE_LIBXSLT=ON ${CMAKE_OPTIONS} ../nagios-monitoring || exit 1
 
 build_package || exit 1
 
