@@ -11,7 +11,7 @@ SUBMODULE=ON
 
 PLATFORM_DIR=HPCC-Platform 
 
-HPCC_REPO=https://github.com/hpcc-systems/HPCC-Platform.git
+HPCC_REPO=https://github.com/${github_user}/HPCC-Platform.git
 
 
 echo ""

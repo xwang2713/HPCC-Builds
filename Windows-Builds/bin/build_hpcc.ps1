@@ -20,6 +20,7 @@ Usage:  ./build_hpcc.sh -branch <branch or tag>  -project <project id separated 
 			-docs <ECL IDE docs root directory, default: Z:/build/windows/ECLIDE/docs> -release <relation name (optional)>
 			-ct_version client tools version for building ECLIDE
 			-gc_version graphic control version for building ECLIDE
+			-github_user github user. Default is hpcc-systems
 			Under docs the directory struction is ECLIDE/docs/<release>/.
 			If projects is set to 'all' it will build 1,2,3,4 since KEL and SALT branches are 
 			different from HPCC core components.
@@ -52,6 +53,7 @@ param(
 	   $docs="Z:/build/windows/ECLIDE/docs",
 	   $ct_build="",
 	   $gc_build="",
+	   $user="hpcc-systems",
 	   [bool]$reset
 	  )
 
@@ -82,6 +84,7 @@ $global:EXTERNALS_DIRECTORY  =  $externals
 $global:EXTERNALS2_DIRECTORY =  $externals2
 $global:SIGN_DIRECTORY       =  $sign
 $global:DOCS_DIRECTORY       =  $docs
+$global:GITHUB_USER          =  $user
 
 	  
 @" 

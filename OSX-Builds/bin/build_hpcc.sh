@@ -5,11 +5,12 @@ usage() {
    cat << EOF
      Usage $(basename $0) options
      Options:
-        -b:  HPCC component branch or tag.
+        -b: HPCC component branch or tag.
         -p: HPCC componet ids seperated by comma. 
            1:  Clienttools
            2:  Graphcontrol 
         -r: HPCC release version. Example, 5.0.0-1
+        -u: github user. Default is hpcc-systems
         -h:  Help message
       
 EOF
@@ -32,6 +33,7 @@ branch=
 projects=all
 release=
 reset=0
+github_user=hpcc-systems
 
 project_config_file=(
       'Project configuration'
@@ -55,6 +57,8 @@ while true ; do
             shift ;;
        -r) release="$2"
             shift 2;;
+       -u) github_user="$2"
+            shift 2;;
        --) shift ; break ;;
        *) usage ;;
     esac
@@ -69,7 +73,7 @@ check_distro
 echo "$DISTRO $CODENAME $PKG_TYPE $ARCH"
 export PKG_TYPE
 export CODENAME
-
+export github_user
 
 if [ ! -e  ${rootDir}/bin/config/os/${CODENAME}-${ARCH}.conf  ]
 then

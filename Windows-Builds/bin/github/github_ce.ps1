@@ -16,7 +16,7 @@ if ( !([string]::IsNullOrEmpty($args[1])) )
 }
 
 $PLATFORM_DIR = "HPCC-Platform"
-$HPCC_REPO    = "https://github.com/hpcc-systems/HPCC-Platform.git"
+$HPCC_REPO    = "https://github.com/${GITHUB_USER}/HPCC-Platform.git"
 
 ""
 "Get HPCC Platform repo"

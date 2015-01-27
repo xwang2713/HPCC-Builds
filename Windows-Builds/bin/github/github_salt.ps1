@@ -15,7 +15,7 @@ $TAG_BRANCH_NAME = $args[0]
 ""
 "Get SALT repo"
 $SALT_DIR = "KEL"
-$SALT_REPO    = "https://github.com/hpcc-systems/SALT.git"
+$SALT_REPO    = "https://github.com/${GITHUB_USER}/SALT.git"
 
 if ( Test-Path $SALT_DIR ) { rm -r -Force $SALT_DIR }
 mkdir $SALT_DIR | Out-Null

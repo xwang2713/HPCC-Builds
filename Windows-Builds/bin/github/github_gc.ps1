@@ -15,7 +15,7 @@ $TAG_BRANCH_NAME = $args[0]
 ""
 "Get GraphControl repo"
 $GC_DIR = "GraphControl"
-$GC_REPO    = "https://github.com/hpcc-systems/GraphControl.git"
+$GC_REPO    = "https://github.com/${GITHUB_USER}/GraphControl.git"
 
 if ( Test-Path $GC_DIR ) { rm -r -Force $GC_DIR }
 mkdir $GC_DIR | Out-Null

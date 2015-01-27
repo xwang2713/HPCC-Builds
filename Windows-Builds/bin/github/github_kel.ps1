@@ -15,7 +15,7 @@ $TAG_BRANCH_NAME = $args[0]
 ""
 "Get KEL repo"
 $KEL_DIR = "KEL"
-$KEL_REPO    = "https://github.com/hpcc-systems/KEL.git"
+$KEL_REPO    = "https://github.com/${GITHUB_USER}/KEL.git"
 
 if ( Test-Path $KEL_DIR ) { rm -r -Force $KEL_DIR }
 mkdir $KEL_DIR | Out-Null
