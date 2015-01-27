@@ -8,7 +8,7 @@ TAG_BRANCH_NAME=$1
 
 GM_DIR=ganglia-monitoring 
 
-GM_REPO=https://github.com/hpcc-systems/ganglia-monitoring.git
+GM_REPO=https://github.com/${github_user}/ganglia-monitoring.git
 
 
 echo ""

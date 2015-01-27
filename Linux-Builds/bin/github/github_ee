@@ -21,7 +21,7 @@ LN_DIR=LN
 echo ""
 echo "get HPCC LN repo"
 [ -d $LN_DIR ] && rm -rf $LN_DIR
-LN_REPO=https://github.com/hpcc-systems/LN.git
+LN_REPO=https://github.com/${github_user}/LN.git
 
 git clone $LN_REPO 
 

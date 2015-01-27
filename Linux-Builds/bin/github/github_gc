@@ -23,7 +23,7 @@ fi
 echo ""
 echo "get HPCC GraphControl repo"
 [ -d GraphControl ] && rm -rf GraphControl
-GC_REPO=https://github.com/hpcc-systems/GraphControl.git
+GC_REPO=https://github.com/${github_user}/GraphControl.git
 
 git clone $GC_REPO 
 
