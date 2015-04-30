@@ -53,7 +53,7 @@ param(
 	   $docs="Z:/build/windows/ECLIDE/docs",
 	   $ct_build="",
 	   $gc_build="",
-	   $user="hpcc-systems",
+	   $github_user="hpcc-systems",
 	   [bool]$reset
 	  )
 
@@ -84,7 +84,7 @@ $global:EXTERNALS_DIRECTORY  =  $externals
 $global:EXTERNALS2_DIRECTORY =  $externals2
 $global:SIGN_DIRECTORY       =  $sign
 $global:DOCS_DIRECTORY       =  $docs
-$global:GITHUB_USER          =  $user
+$global:GITHUB_USER          =  $github_user
 
 	  
 @" 
