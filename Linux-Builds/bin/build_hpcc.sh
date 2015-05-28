@@ -7,6 +7,7 @@ usage() {
      Options:
         -b|--branch:  HPCC component branch or tag.
                It can be multiple branches separated by ','.
+               For example, LN build -b <Platform branch>,<LN branch>
         -p|--project: HPCC componet ids seperated by comma. 
            1:  Platform community (rpm only)
            2:  Platform community with plugin
@@ -22,6 +23,7 @@ usage() {
         -r|--release: HPCC release version. Example, 5.0.0-1
         -u|--user: github user. Default is hpcc-systems
                It can be multiple users for multiple branches separated by ','.
+               For example, LN build -u <Platform github user>,<LN github user>
         -h|--help:  Help message
       
 EOF
