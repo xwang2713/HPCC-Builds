@@ -9,6 +9,18 @@ cmakeOptions=${scriptName}_cmake_options
 . ${curDir}/build_common
 . ${curDir}/build_common_${PKG_TYPE}
 
+BUILD_SCRIPT=../build.sh
+cat > $BUILD_SCRIPT <<SCRIPTFILE
+#!/bin/sh 
+
+cmake -DCMAKE_BUILD_TYPE=Release -DWITH_SYSTEM_BOOST=1 -DFB_PROJECTS_DIR:PATH=../GraphControl -DGRAPHVIZSRC_DIR=/usr/local/src/graphviz-2.26.3 -DAGGSRC_DIR=../agg ../FireBreath || exit 1
+
+make -j4 package
+
+SCRIPTFILE
+
+chmod +x $BUILD_SCRIPT
+
 echo "cmake -DCMAKE_BUILD_TYPE=Release -DWITH_SYSTEM_BOOST=1 -DFB_PROJECTS_DIR:PATH=../GraphControl -DGRAPHVIZSRC_DIR=/usr/local/src/graphviz-2.26.3 -DAGGSRC_DIR=../agg ../FireBreath"
 cmake -DCMAKE_BUILD_TYPE=Release -DWITH_SYSTEM_BOOST=1 -DFB_PROJECTS_DIR:PATH=../GraphControl -DGRAPHVIZSRC_DIR=/usr/local/src/graphviz-2.26.3 -DAGGSRC_DIR=../agg ../FireBreath || exit 1
 

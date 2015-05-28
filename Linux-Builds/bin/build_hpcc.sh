@@ -6,6 +6,7 @@ usage() {
      Usage $(basename $0) options
      Options:
         -b|--branch:  HPCC component branch or tag.
+               It can be multiple branches separated by ','.
         -p|--project: HPCC componet ids seperated by comma. 
            1:  Platform community (rpm only)
            2:  Platform community with plugin
@@ -20,6 +21,7 @@ usage() {
           11:  Docs (Ubuntu 12.04 precise only)
         -r|--release: HPCC release version. Example, 5.0.0-1
         -u|--user: github user. Default is hpcc-systems
+               It can be multiple users for multiple branches separated by ','.
         -h|--help:  Help message
       
 EOF
@@ -60,8 +62,8 @@ project_config_file=(
 )
 
 
-TEMP=$(/usr/bin/getopt -o b:hp:Rr: --long branch:,help,project:,release:,reset -n 'build_hpcc' -- "$@")
-if [ $? != 0 ] ; then echo "Failure to parse commandline." >&2 ; end 1 ; fi
+TEMP=$(/usr/bin/getopt -o b:hp:Rr:u: --long branch:,help,project:,release:,reset,user -n 'build_hpcc' -- "$@")
+if [ $? != 0 ]; then echo "Failure to parse commandline." >&2 ; end 1 ; fi
 eval set -- "$TEMP"
 while true ; do
     case "$1" in
@@ -83,7 +85,7 @@ while true ; do
 done
 
 [ -z "$branch" ] && usage
-[ -z "$release" ] && release=$branch
+[ -z "$release" ] && release=${branch%%,*}
 
 #echo $rootDir
 . ${rootDir}/bin/common
