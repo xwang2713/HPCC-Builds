@@ -4,6 +4,8 @@ curDir=$(dirname $0)
 . ${curDir}/github_common
 
 [ -z "$1" ] && echo "Miss tag or branch name" && exit 1
+
+
 match_branch_suffix $1
 if [ $? -eq 0 ]
 then

@@ -3,4 +3,32 @@
 [ -z "$1" ] && echo "Miss tag or branch name" && exit 1
 
 curDir=$(dirname $0)
+. ${curDir}/github_common
+
+get_user_and_branch $1 ${github_user}
+
+match_branch_suffix $branch2
+if [ $? -eq 0 ]
+then
+   TAG_BRANCH_NAME=v$branch2
+else
+   TAG_BRANCH_NAME=$branch2
+fi
+
+
 ${curDir}/github_ce $1 OFF
+[ $? -ne 0 ] && exit 1
+
+CFG_DIR=HPCC-Configurator
+echo ""
+echo "get HPCC Configurator repo"
+[ -d $CFG_DIR ] && rm -rf $CFG_DIR
+
+#remove this when HPCC-Configurator is moved to HPCC-Sysystems
+github_user2=garonsky
+CFG_REPO=https://github.com/${github_user2}/HPCC-Configurator.git
+
+git clone $CFG_REPO
+
+cd $CFG_DIR
+get_branch_tag $TAG_BRANCH_NAME

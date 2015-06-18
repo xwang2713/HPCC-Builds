@@ -24,7 +24,7 @@ NM_DIR=nagios-monitoring
 echo ""
 echo "get HPCC Nagios Monitoring repo"
 [ -d $NM_DIR ] && rm -rf $NM_DIR
-NM_REPO=https://github.com/${github_user}/nagios-monitoring.git
+NM_REPO=https://github.com/${github_user2}/nagios-monitoring.git
 
 git clone $NM_REPO 
 

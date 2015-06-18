@@ -20,7 +20,7 @@ ${curDir}/github_ce $1  OFF
 
 GM_DIR=ganglia-monitoring 
 
-GM_REPO=https://github.com/${github_user}/ganglia-monitoring.git
+GM_REPO=https://github.com/${github_user2}/ganglia-monitoring.git
 
 
 echo ""
