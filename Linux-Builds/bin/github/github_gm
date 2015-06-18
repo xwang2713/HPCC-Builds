@@ -4,7 +4,19 @@ curDir=$(dirname $0)
 . ${curDir}/github_common
 
 [ -z "$1" ] && echo "Miss tag or branch name" && exit 1
-TAG_BRANCH_NAME=$1
+
+get_user_and_branch $1 ${github_user}
+
+match_branch_suffix $branch2
+if [ $? -eq 0 ]
+then
+   TAG_BRANCH_NAME=ganglia-monitoring_$branch2
+else
+   TAG_BRANCH_NAME=$branch2
+fi
+
+${curDir}/github_ce $1  OFF
+[ $? -ne 0 ] && exit 1
 
 GM_DIR=ganglia-monitoring 
 

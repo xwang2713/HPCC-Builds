@@ -19,7 +19,7 @@ usage() {
            8:  Graphcontrol (deb only)
            9:  Ganglia-monitoring
           10:  Nagios-monitoring
-          11:  Docs (Ubuntu 12.04 precise only)
+          11:  Docs (Ubuntu 12.04 or 14.04 only)
         -r|--release: HPCC release version. Example, 5.0.0-1
         -u|--user: github user. Default is hpcc-systems
                It can be multiple users for multiple branches separated by ','.
