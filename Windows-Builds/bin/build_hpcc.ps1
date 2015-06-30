@@ -47,7 +47,7 @@ param(
 	      Throw "Missing branch/tag suffix or full name. For example 5.0.0-1"),
        $projects="all",
 	   $release="",
-	   $externals="Z:/build/windows/externals",
+	   $externals="Z:/build/windows/platform_externals",
 	   $externals2="Z:/build/windows/externals2",
 	   $sign="Z:/build/windows/sign",
 	   $docs="Z:/build/windows/ECLIDE/docs",
@@ -86,6 +86,7 @@ $global:SIGN_DIRECTORY       =  $sign
 $global:DOCS_DIRECTORY       =  $docs
 $global:GITHUB_USER          =  $github_user
 
+"+++++: $GITHUB_USER"
 	  
 @" 
 
