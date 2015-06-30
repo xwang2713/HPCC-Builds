@@ -8,8 +8,36 @@ cmakeOptions=${scriptName}_cmake_options
 . ${curDir}/build_common
 . ${curDir}/build_common_${PKG_TYPE}
 
-echo "cmake -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 -DMAKE_DOCS_ONLY=ON -DUSE_NATIVE_LIBRARIES=ON ${CMAKE_OPTIONS} ../HPCC-Platform" 
-cmake -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 -DMAKE_DOCS_ONLY=ON -DUSE_NATIVE_LIBRARIES=ON ${CMAKE_OPTIONS} ../HPCC-Platform || exit 1
+
+cd ..
+build_cfg_dir=build-configurator
+[ ! -e $build_cfg_dir ] && mkdir -p $build_cfg_dir
+BUILD_SCRIPT=build-cfg.sh
+cat > $BUILD_SCRIPT <<SCRIPTFILE
+#!/bin/sh
+cmake ../HPCC-Configurator
+SCRIPTFILE
+
+chmod +x $BUILD_SCRIPT
+
+cd $build_cfg_dir
+cmake ../HPCC-Configurator
+make -j4 || exit 1
+
+cd ..
+BUILD_SCRIPT=build.sh
+cat > $BUILD_SCRIPT <<SCRIPTFILE
+#!/bin/sh
+cmake -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 -DMAKE_DOCS_ONLY=ON -DUSE_NATIVE_LIBRARIES=ON ${CMAKE_OPTIONS} \
+-DDOCS_AUTO=ON -DCONFIGURATOR_DIRECTORY=../../../build-configurator/configurator ../HPCC-Platform || exit 1
+SCRIPTFILE
+chmod +x $BUILD_SCRIPT
+
+cd build
+echo "cmake -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 -DMAKE_DOCS_ONLY=ON -DUSE_NATIVE_LIBRARIES=ON \
+${CMAKE_OPTIONS}  -DDOCS_AUTO=ON -DCONFIGURATOR_DIRECTORY=../../../build-configurator/configurator ../HPCC-Platform"
+cmake -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 -DMAKE_DOCS_ONLY=ON -DUSE_NATIVE_LIBRARIES=ON ${CMAKE_OPTIONS} \
+-DDOCS_AUTO=ON -DCONFIGURATOR_DIRECTORY=../../../build-configurator/configurator ../HPCC-Platform || exit 1
 
 make -j4 || exit 1
 
