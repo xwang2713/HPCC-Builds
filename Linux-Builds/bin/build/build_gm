@@ -13,7 +13,7 @@ cat > $BUILD_SCRIPT <<SCRIPTFILE
 #!/bin/sh 
 
 
-cmake -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 ${CMAKE_OPTIONS} ../ganglia-monitoring || exit 1
+cmake -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 -DUSE_LIBXSLT=ON ${CMAKE_OPTIONS} ../ganglia-monitoring || exit 1
 make -j4 package
 
 SCRIPTFILE
@@ -21,7 +21,7 @@ SCRIPTFILE
 chmod +x $BUILD_SCRIPT
 
 echo "cmake  -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 ${CMAKE_OPTIONS} ../ganglia-monitoring" 
-cmake -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 ${CMAKE_OPTIONS} ../ganglia-monitoring || exit 1
+cmake -DCMAKE_BUILD_TYPE=Release  -DCHECK_GIT_TAG=0 -DUSE_LIBXSLT=ON ${CMAKE_OPTIONS} ../ganglia-monitoring || exit 1
 
 build_package || exit 1
 
