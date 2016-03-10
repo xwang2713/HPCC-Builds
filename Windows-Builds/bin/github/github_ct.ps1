@@ -6,6 +6,6 @@ if ( ([string]::IsNullOrEmpty($args[0])) )
    exit 1
 }
 
-& ${github_directory}/github_ce.ps1 $args[0] OFF
+& ${github_directory}/github_ce.ps1 $args[0] ON
 if ( ! ($?) ) { exit 1 }
 exit 0
