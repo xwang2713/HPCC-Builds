@@ -1,6 +1,8 @@
 $github_directory = split-path $myInvocation.MyCommand.path
 Import-Module  ${github_directory}/github_common.psm1 -Force
 
+
+
 if ( ([string]::IsNullOrEmpty($args[0])) )
 {
    "Miss tag or branch name"
@@ -9,10 +11,11 @@ if ( ([string]::IsNullOrEmpty($args[0])) )
 
 $TAG_BRANCH_NAME = $args[0]
 
-$SUBMODULE = True
-if ( !([string]::IsNullOrEmpty($args[1])) ) 
+$SUBMODULE = $TRUE
+"Get submodule 1: $SUBMODULE"
+if ( [string]::IsNullOrEmpty($args[1])  ) 
 {
-    $SUBMODULE = False
+    $SUBMODULE = $FALSE
 }
 
 $PLATFORM_DIR = "HPCC-Platform"

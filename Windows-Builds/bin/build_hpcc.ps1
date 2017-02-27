@@ -13,7 +13,7 @@ Current supported HPCC Components on Windows:
 	  5. KEL
 	  6. SALT Lite
 	  7. SALT
-Usage:  ./build_hpcc.sh -branch <branch or tag>  -project <project id separated by common> or all>
+Usage:  ./build_hpcc.ps1 -branch <branch or tag>  -project <project id separated by common> or all>
             -external <externals directory, default: Z:/build/windows/externals> 
 			-external2 <externals2 directory, default: Z:/build/windows/externals2> 
 			-sign <sign directory, default: Z:/build/windows/sign> 
@@ -26,10 +26,10 @@ Usage:  ./build_hpcc.sh -branch <branch or tag>  -project <project id separated 
 			different from HPCC core components.
 			
 .EXAMPLE
-./build_hpcc.sh -branch 5.0.0-1 -project 1,2,3,4 -release 5.0.0
+./build_hpcc.ps1 -branch 5.0.0-1 -project 1,2,3,4 -release 5.0.0
 
 .EXAMPLE
-./build_hpcc.sh -branch 5.0.0-1 -p 4
+./build_hpcc.ps1 -branch 5.0.0-1 -p 4
 This will build ECLIDE with release varialbe set to 5.0.0-1. 
 ECLIDE requires Clienttools and GraphControls 32bit. These two should be built first.
 
@@ -44,12 +44,12 @@ https://github.com/xwang2713/HPCC-Builds.git
 
 param(
        $branch=$(
-	      Throw "Missing branch/tag suffix or full name. For example 5.0.0-1"),
+	      Throw "Missing branch/tag suffix or full name. For example 6.2.6-1"),
        $projects="all",
 	   $release="",
-	   $externals="Z:/build/windows/platform_externals",
-	   $externals2="Z:/build/windows/externals2",
-	   $sign="Z:/build/windows/sign",
+	   $externals="Z:/build/windows/platform_externals_vs2015",
+	   $externals2="Z:/build/windows/gc_eclide_externals_vs2015",
+	   $sign="C:/HPCC/sign",
 	   $docs="Z:/build/windows/ECLIDE/docs",
 	   $ct_build="",
 	   $gc_build="",
@@ -86,7 +86,6 @@ $global:SIGN_DIRECTORY       =  $sign
 $global:DOCS_DIRECTORY       =  $docs
 $global:GITHUB_USER          =  $github_user
 
-"+++++: $GITHUB_USER"
 	  
 @" 
 
