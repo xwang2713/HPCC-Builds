@@ -38,7 +38,7 @@ mkdir $FB_DIR | Out-Null
 git clone $FB_REPO
 
 cd $FB_DIR
-get_branch_tag closedown-4.0.x
+get_branch_tag candidate-6.0.0
 cd ..
 #-----------------------------------------------------------
 # Get AGG Repository
@@ -53,7 +53,7 @@ mkdir $AGG_DIR | Out-Null
 git clone $AGG_REPO
 
 cd $AGG_DIR
-get_branch_tag HPCC-8372
+get_branch_tag candidate-6.0.0
 cd ..
 
 exit 0

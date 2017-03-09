@@ -1,5 +1,5 @@
 $global:display_name        = "HPCCSystem GraphControl Community 64bits"
-$global:project_directory   = "graphcontrol_64bits"
+$global:project_directory   = "gc64"
 $global:github_script       = "github_gc.ps1"
 $global:build_directory        = "build/GraphControl"
 $global:build_script        = "build_gc64.ps1"

@@ -6,7 +6,15 @@ Function build_hpcc
    iex "cmake --build . --config $cmake_build_type  --target package 2>&1; `$err=`$?"
    if ( ! ($err) ) { throw "Fails to package" }
 	
-   iex "cmake --build . --config $cmake_build_type  --target sign 2>&1; `$err=`$?"
+   if ( [string]::IsNullOrEmpty($args[0])  ) 
+   {
+     
+	  iex "cmake --build . --config $cmake_build_type  --target sign 2>&1; `$err=`$?"
+   }
+   else
+   {
+	   iex "cmake --build . --config $cmake_build_type  --target projects/HPCCSystemsGraphViewControl/SIGN 2>&1; `$err=`$?"
+   }
    if ( ! ($err) ) { throw "Fails to sign" }
    
 }

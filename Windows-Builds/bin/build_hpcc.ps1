@@ -138,7 +138,7 @@ cd ${work_directory}/${release}
 $global:release_directory = $pwd.Path
 $global:output_directory = "${release_directory}/output"
 $global:ct_directory = "${work_directory}/${ct_build}/clienttools"
-$global:gc_directory = "${work_directory}/${gc_build}/graphcontrol_32bits"
+$global:gc_directory = "${work_directory}/${gc_build}/gc32"
 
 $projects = $projects -replace ',', ' '
 $supported_projects = Get-Content ${bin_directory}/config/os/win.conf | %{$_.split('=')[1]}

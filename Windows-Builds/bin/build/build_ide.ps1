@@ -36,20 +36,27 @@ else
 }
 cp ${DOCS_DIRECTORY}/${hpcc_version}/ECLReference.chm -destination ${eclide_dir}/ECLIDE/docs/
 
-$cmd = "cmake -G 'Visual Studio 10' -DCMAKE_BUILD_TYPE=RelWithDebInfo " `
+ 
+ 
+ 
+
+$cmd = "cmake -G 'Visual Studio 14' -DCMAKE_BUILD_TYPE=RelWithDebInfo " `
        + "-DWITH_DYNAMIC_MSVC_RUNTIME=1 " `
-	   + "-DBOOST_INCLUDEDIR:PATH=${EXTERNALS2_DIRECTORY}/Boost/include/boost-1_46_1 " `
-	   + "-DBOOST_LIBRARYDIR:PATH=${EXTERNALS2_DIRECTORY}/Boost/lib " `
+	   + "-DBOOST_INCLUDEDIR:PATH=${EXTERNALS2_DIRECTORY}/boost/1.60.0 " `
+	   + "-DBOOST_LIBRARYDIR:PATH=${EXTERNALS2_DIRECTORY}/boost/1.60.0/lib32-msvc-14.0 " `
 	   + "-DAGG_INCLUDE_DIR:PATH=${EXTERNALS2_DIRECTORY}/agg/agg-2.4 " `
-	   + "-DWTL_INCLUDE_DIR:PATH=${EXTERNALS2_DIRECTORY}/wtl81_11324 " `
-	   + "-DBUGTRAP_INCLUDE_DIR=${EXTERNALS2_DIRECTORY}/BugTrapSrc/BugTrap/Win32/BugTrap " `
+	   + "-DWTL_INCLUDE_DIR:PATH=${EXTERNALS2_DIRECTORY}/wtl/9.1.5321 " `
+	   + "-DBUGTRAP_INCLUDE_DIR=${EXTERNALS2_DIRECTORY}/bugtrap/6.0.0/source " `
 	   + "-DGRAPHLAYOUT_INCLUDE_DIR=${eclide_dir}/GraphControl/graphlayout " `
 	   + "-DGRAPHLAYOUT_LIBRARY=${eclide_dir}/GraphControl_lib/npHPCCSystemsGraphViewControl.lib " `
 	   + "-DGRAPHLAYOUT_DLL=${eclide_dir}/GraphControl_lib/npHPCCSystemsGraphViewControl.dll " `
-	   + "-DGRAPHVIZ_INCLUDE_DIR=${EXTERNALS2_DIRECTORY}/graphviz-2.26.3 " `
-	   + "-DGSOAP_INCLUDE_DIR=${EXTERNALS2_DIRECTORY}/gsoap " `
-	   + "-DSCINTILLA_INCLUDE_DIR=${EXTERNALS2_DIRECTORY}/scintilla303/scintilla " `
-	   + "-DZLIB_INCLUDE_DIR=${EXTERNALS2_DIRECTORY}/zlib-vc/zlib " `
+	   + "-DGRAPHVIZ_INCLUDE_DIR=${EXTERNALS2_DIRECTORY}/graphviz/2.26.3 " `
+	   + "-DGSOAP_INCLUDE_DIR=${EXTERNALS2_DIRECTORY}/gsoap/2.7/gsoap " `
+	   + "-DSCINTILLA_INCLUDE_DIR=${EXTERNALS2_DIRECTORY}/scintilla/scintilla " `
+	   + "-DZLIB_INCLUDE_DIR=${EXTERNALS2_DIRECTORY}/zlib/1.2.3 " `
+	   + "-DFREETYPE_INCLUDE_DIR_ft2build=${EXTERNALS2_DIRECTORY}/freetype2/2.4.8/include " `
+       + "-DFREETYPE_INCLUDE_DIR_freetype2=${EXTERNALS2_DIRECTORY}/freetype2/2.4.8/include " `
+       + "-DFREETYPE_LIBRARY=${EXTERNALS2_DIRECTORY}/freetype2/2.4.8/objs/win32/vc2015/freetype248MT.lib " `
  	   + "${eclide_dir}/ECLIDE"
 
 "$cmd"
